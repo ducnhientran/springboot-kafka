@@ -1,0 +1,32 @@
+version: '3'
+services:
+ 
+  mysqldemo:
+    image: mysql:8
+    container_name: mysqldemo
+    networks:
+      - demonetwork
+    ports:
+      - "3307:3306"  
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=demo
+
+  demoapp:
+    image: demoapp:v1
+    container_name: app
+    restart: on-failure
+    ports:
+      - "8088:8080"
+    networks:
+      - demonetwork
+    environment:
+      - MYSQL_HOST=mysqldemo
+      - MYSQL_PORT=3306    
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=root
+    depends_on:
+      - mysqldemo
+
+networks:
+  demonetwork:

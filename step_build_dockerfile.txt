@@ -1,0 +1,5 @@
+1, docker build -t demoapp:v1 .
+2, docker network create demonetwork
+3, docker container run --name mysqldemo --network demonetwork -e MYSQL_ROOT_PASSWORD=root -e MYSQL_DATABASE=demo -p 3307:3306 -d mysql:8
+4, docker run --name app --net demonetwork -e MYSQL_HOST=mysqldemo -e MYSQL_PORT=3306 -e MYSQL_USER=root -e MYSQL_PASSWORD=root -p 8087:8080  demoapp:v1
+or 4, docker run --name app --net demonetwork --env-file envapp -p 8087:8080  demoapp:v1
